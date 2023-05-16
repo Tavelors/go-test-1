@@ -1,8 +1,8 @@
 package main
 
 import (
+	"1/controller"
 	"encoding/json"
-	"go-test-1/pack"
 	"log"
 	"net/http"
 )
@@ -18,19 +18,22 @@ func main() {
 		}
 
 		jsonResponse, err := json.Marshal(response)
+
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		w.Header().Set("Content-Type", "application/json")
-\\
+
 		w.Write(jsonResponse)
 	}
 
-	pack.SayHello()
-
 	http.HandleFunc("/api", handler)
+
+	http.HandleFunc("/apii", controller.PostTask)
+
+	http.HandleFunc("/hi", controller.GetTask)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
